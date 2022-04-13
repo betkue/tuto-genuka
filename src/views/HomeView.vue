@@ -1,18 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img v-if='company.logo == null' alt="Vue logo" src="../assets/logo.png">
+    <img v-if='company.logo != null' alt="Vue logo" :src="company.logo">
+    <Home />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Home from '@/components/Home.vue'
 
+import { mapGetters } from "vuex";
 export default {
   name: 'HomeView',
   components: {
-    HelloWorld
-  }
+    Home
+  },
+  
+   computed: {
+        ...mapGetters(['company']),
+        ...mapGetters(['racine']),
+        ...mapGetters(['token']),
+    },
 }
 </script>

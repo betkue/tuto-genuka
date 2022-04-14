@@ -15,6 +15,8 @@ export class Link {
         this.last = json['last'];
         this.prev = json['prev'];
         this.next = json['next'];
+
+        return new Link(this.first,this.last,this.prev,this.next)
     }
 
 }
@@ -49,6 +51,8 @@ export  class Meta {
         this.per_page = json['per_page'];
         this.to = json['to'];
         this.total = json['total'];
+        
+        return new Meta(this.current_page, this.from, this.last_page, this.path, this.per_page, this.to, this.total)
 
     }
 }

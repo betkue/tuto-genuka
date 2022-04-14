@@ -11,8 +11,7 @@ export class Collections {
     }
 
     fromJson(json) {
-
-        this.link = json['link'] != null ? this.link.fromJson(json['link']) : new Link();
+        this.link = json['links'] != null ? this.link.fromJson(json['links']) : new Link();
         this.meta = json['meta'] != null ? this.meta.fromJson(json['meta']) : new Meta();
         if (json['data'] != null) {
             for (let index = 0; index < json['data'].length; index++) {
@@ -52,7 +51,7 @@ class Data {
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.company_id = company_id;
-        this.total_products = total_prducts;
+        this.total_products = total_products;
         this.medias = medias ?? [];
     }
     //machine learning

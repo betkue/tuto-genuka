@@ -53,16 +53,21 @@ class Currency {
      code
      symbol
     constructor(name, code, symbol) {
-        this.name = name??""
-        this.code = code??""
-        this.symbol = symbol??""
+        this.name = name??"";
+        this.code = code??"";
+        this.symbol = symbol??"";
 
     }
     fromJson(json) {
 
-        this.name = json['name']
-        this.code = json['code']
-        this.symbol = json['symbol']
+        this.name = json['name'];
+        this.code = json['code'];
+        this.symbol = json['symbol'];
+
+        return  new Currency (
+           this.name,
+            this.code,
+            this.symbol);
 
 
     }

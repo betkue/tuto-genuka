@@ -10,7 +10,7 @@
       | <router-link v-if="token == null" to="/connect">connect</router-link> |
       <router-link v-if="token == null" to="/deconnect">deconnect</router-link>
     </nav>
-    <router-view />
+    <router-view  />
   </div>
   <LoadHome v-show="company.id == null" :style="{background:'black',height: '100vh' }"/>
 </template>
@@ -48,7 +48,12 @@ export default {
   components: {
     LoadHome
   },
+
   methods:{
+    aff()
+    {
+       console.log(this.$store.state.company);
+    },
     getcompany(){
       
       let company = new Company();
@@ -74,7 +79,7 @@ export default {
     ...mapGetters(["racine"]),
     ...mapGetters(["token"]),
   },
-  async beforeMount() {
+   beforeMount() {
     if (this.$store.state.company.id == null) {
       
          this.getcompany()

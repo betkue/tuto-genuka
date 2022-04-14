@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>{{ company.name }}</h1>
+    <h1>{{ msg }}</h1>
     <h2> {{ company.description }} </h2>
     <div class="display">
       

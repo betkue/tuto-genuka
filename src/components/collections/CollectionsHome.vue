@@ -8,8 +8,6 @@
 <script>
 import LoadCollectionsHome from "../loaders/LoadCollectionsHome.vue";
 import { mapGetters } from "vuex";
-//import { Collections } from "@/models/collections";
-//import axios from "axios";
 export default {
   name: "CollectionsHome",
   computed: {
@@ -18,15 +16,13 @@ export default {
     ...mapGetters(["token"]),
   },
   props: {
-    collections: null,
+    collections:null
   },
   components: {
     LoadCollectionsHome,
   },
-  async mounted() {
+   mounted() {
      // this.$emit('company')
-      let url = this.$store.state.racine + "companies/"+ this.$store.state.company.id +"/collections";
-      console.log(url) 
     /* let collec = new Collections();
     console.log(collec);
     console.log(this.$store.state.company)

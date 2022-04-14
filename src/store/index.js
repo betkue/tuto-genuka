@@ -1,11 +1,16 @@
+import { Collections } from '@/models/collections'
+import { products } from '@/models/products'
 import { createStore } from 'vuex'
 import { Company } from '../models/company'
 export default createStore({
+  
   state: {
     racine: "https://preprod.genuka.com/api/2021-10/",
     token: null,
     company: new Company(),
     backgroundcolor : 'black',
+    collections: new Collections,
+    products: new products
   },
   getters: {
     company: state => {
@@ -17,6 +22,12 @@ export default createStore({
     racine: state => {
 
       return `${state.racine}`
+    },
+    collections: state=>{
+      return state.collections
+    },
+    products: state=>{
+      return state.products
     }
 
 
@@ -26,7 +37,17 @@ export default createStore({
   mutations: {
     UPDATE_COMPANY(state, payload) {
       state.company = payload;
+    },
+    
+    CREATE_COLLECTIONS(state, payload) {
+      state.collections = payload;
+    },
+    
+    CREATE_PRODUCTS(state, payload) {
+      state.products = payload;
     }
+
+
   },
   actions: {
   },

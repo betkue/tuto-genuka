@@ -1,5 +1,5 @@
 import { Collections } from '@/models/collections'
-import { products } from '@/models/products'
+import { Products } from '@/models/products'
 import { createStore } from 'vuex'
 import { Company } from '../models/company'
 export default createStore({
@@ -9,8 +9,8 @@ export default createStore({
     token: null,
     company: new Company(),
     backgroundcolor : 'black',
-    collections: new Collections,
-    products: new products
+    collections: new Collections(),
+    products: new Products()
   },
   getters: {
     company: state => {

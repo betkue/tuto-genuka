@@ -1,6 +1,7 @@
 import { Medias } from "./collections";
+import { Link,Meta } from "./paginations";
 
-export class products{
+export class Products{
     
     link
     meta
@@ -121,7 +122,7 @@ export class Data{
                 m.fromJson(json['tags'][index]);
 
                 this.tags.push(
-                    fromJson(m)
+                   m
                 )
 
 
@@ -146,7 +147,7 @@ export class Data{
         if (json['collections'] != null) {
 
             for (let index = 0; index < json['collections'].length; index++) {
-
+                let m = "";
                 m= json['collections'][index];
 
                 this.medias.push(
@@ -208,7 +209,7 @@ class Variants{
                 let m = new Option();
                 m= json['options'][index];
                 
-                this.medias.push(
+                this.options.push(
                     m
                 )
 
@@ -233,14 +234,25 @@ class Option{
     description
     additionnal_fee
     constructor(id,name,image,price,stocks,description,additionnal_fee){
-        id = id;
-        name = name;
-        image = image;
-        price = price;
-        stocks = stocks;
-        description = description;
-        additionnal_fee = additionnal_fee;
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.price = price;
+        this.stocks = stocks;
+        this.description = description;
+        this.additionnal_fee = additionnal_fee;
 
+    }
+
+    fromJson(json){
+        
+        this.id =  json['id'];
+        this.name =  json['name'];
+        this.image =  json['image'];
+        this.price =  json['price'];
+        this.stocks =  json['stocks'];
+        this.description =  json['description'];
+        this.additionnal_fee =  json['additionnal_fee'];
     }
 
 }

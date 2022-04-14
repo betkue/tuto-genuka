@@ -2,7 +2,7 @@
   <div class="home">
     <img v-if='company.logo == null' alt="Vue logo" src="../assets/logo.png">
     <img v-if='company.logo != null' alt="Vue logo" :src="company.logo">
-    <Home :msg='"uoi"' />
+    <Home  />
   </div>
 </template>
 
@@ -13,6 +13,7 @@ import Home from '@/components/Home.vue'
 import axios from "axios";
 import { mapGetters } from "vuex";
 import { Collections } from '@/models/collections';
+import { Products } from '@/models/products';
 export default {
   name: 'HomeView',
   methods:{
@@ -23,13 +24,14 @@ export default {
     axios.get(url).then(
         (response)=>{
           collec.fromJson(response.data) 
+          console.log(response.data)
           this.$store.commit('CREATE_COLLECTIONS',collec);
         }
     );
     },
     getproducts(){
           let url = this.$store.state.racine + "companies/"+ this.$store.state.company.id +"/products";
-    let collec =new Collections();
+    let collec =new Products();
     console.log(url);
     axios.get(url).then(
         (response)=>{

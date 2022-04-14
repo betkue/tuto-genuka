@@ -1,7 +1,15 @@
 <template>
-  <LoadCollectionsHome v-if="collections == null" />
-  <section v-else-if="collections.length == 0">vide</section>
-  <section v-else>plein</section>
+  <LoadCollectionsHome v-if="collections.data == null" />
+  <section v-else-if="collections.data.length == 0">vide</section>
+  <section v-else>
+    <div>
+      <span>{{ collections.data[0].name }}</span>
+    </div>
+
+
+
+
+  </section>
 </template>
 
 
@@ -14,13 +22,21 @@ export default {
     ...mapGetters(["company"]),
     ...mapGetters(["racine"]),
     ...mapGetters(["token"]),
-  },
-  props: {
-    collections:null
+    ...mapGetters(["collections"]),
+    ...mapGetters(["products"]),
   },
   components: {
     LoadCollectionsHome,
   },
+    updated(){
+
+
+      console.log(this.$store.state.collections.data[0])
+
+        
+
+
+    },
    mounted() {
      // this.$emit('company')
     /* let collec = new Collections();
@@ -36,3 +52,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+
+  span{
+    font-size:2em;
+    }
+</style>

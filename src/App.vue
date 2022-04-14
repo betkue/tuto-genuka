@@ -5,16 +5,14 @@
       <router-link to="/about">About</router-link> |
       <router-link v-if="token == null" to="/products">Produits</router-link> |
       <router-link v-if="token == null" to="/collections"
-        >Collections</router-link
+         >Collections</router-link
       >
       | <router-link v-if="token == null" to="/connect">connect</router-link> |
       <router-link v-if="token == null" to="/deconnect">deconnect</router-link>
     </nav>
     <router-view />
   </div>
-  <div v-show="company.id == null" :style="{background:'black',height: '100vh' }">
-    
-  </div>
+  <LoadHome v-show="company.id == null" :style="{background:'black',height: '100vh' }"/>
 </template>
 
 
@@ -44,16 +42,15 @@ nav a.router-link-exact-active {
 import { mapGetters } from "vuex";
 import { Company } from "@/models/company";
 import axios from "axios";
+import LoadHome from '@/components/loaders/LoadHome.vue'
 export default {
   name: "App",
-  components: {},
-  computed: {
-    ...mapGetters(["company"]),
-    ...mapGetters(["racine"]),
-    ...mapGetters(["token"]),
+  components: {
+    LoadHome
   },
-  async beforeMount() {
-    if (this.$store.state.company.id == null) {
+  methods:{
+    getcompany(){
+      
       let company = new Company();
       let domaine =
         document.location.protocol + "//" + document.location.hostname;
@@ -64,11 +61,23 @@ export default {
           if (response.status == 200) {
             let json = response.data;
             company.fromJson(json);
-            console.log(company);
 
             this.$store.commit("UPDATE_COMPANY", company);
+
+            return company;
           }
         });
+    }
+  },
+  computed: {
+    ...mapGetters(["company"]),
+    ...mapGetters(["racine"]),
+    ...mapGetters(["token"]),
+  },
+  async beforeMount() {
+    if (this.$store.state.company.id == null) {
+      
+         this.getcompany()
     }
   },
 };

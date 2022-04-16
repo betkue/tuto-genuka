@@ -2,7 +2,7 @@
 <template>
   <div :style="{ background: 'black', height: '100vh' }">
 
-    Loading ...
+    Loading ... {{ login }}
 
   </div>
 </template>
@@ -17,9 +17,14 @@ div{
 
 
 <script>
+
+import { mapGetters } from "vuex";
 export default {
   name: "LoadHome",
   methods:{
-  }
+  },
+  computed: {
+    ...mapGetters(["login"])
+  },
 };
 </script>

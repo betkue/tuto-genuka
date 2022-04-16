@@ -65,7 +65,10 @@ export default {
         return new Promise((resolve) => {
           setTimeout(function () {
             resolve("lente");
+            if (store.state.company.id == null) {
+              
             store.commit("UPDATE_COMPANY", new Company(-404));
+            }
           }, store.state.timeReset);
         });
       };

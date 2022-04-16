@@ -23,14 +23,18 @@ let store = createStore({
     products: new Products(),
     single_collection: new Collections(),
     single_product: new Product_Single(),
-    panier : new Panier(),
-    idProduct : null,
-    idCollection : null ,
+    panier: new Panier(),
+    idProduct: null,
+    idCollection: null,
+    login: "company"
   },
   Plugin: [
 
   ],
   getters: {
+    login: state => {
+      return state.login
+    },
     company: state => {
       return state.company
     },
@@ -76,7 +80,9 @@ let store = createStore({
     },
     async GET_COMPANY(state) {
 
+
       if (state.company.id == null) {
+        state.login = "company";
         let company = new Company();
         let prod = new Products();
         let collec = new Collections();
@@ -85,11 +91,11 @@ let store = createStore({
 
 
 
-        // let  timerID = setTimeout(lose(), 500);
         axios
           .get(api + "companies/byurl?url=" + domaine)
           .then((response) => {
             if (response.status == 200) {
+              state.login = "collection";
               let json = response.data;
               company.fromJson(json);
 
@@ -99,6 +105,7 @@ let store = createStore({
                 (response) => {
 
                   if (response.status == 200) {
+                    state.login = "products";
 
                     collec.fromJson(response.data);
                     let url2 = api + "companies/" + company.id + "/products";
@@ -149,19 +156,19 @@ let store = createStore({
           if (response.status == 200) {
 
             collec.fromJson(response.data);
-            
-              if (payload.link == null) {
-                state.collections = collec;
-              }
-              else{
 
-                for (let index = 0; index < collec.length; index++) {
-                  state.collections.data.push(collec[index]);
-                  
-                }
-                state.collections.link = collec.link
-                state.collections.meta = collec.meta
+            if (payload.link == null) {
+              state.collections = collec;
+            }
+            else {
+
+              for (let index = 0; index < collec.length; index++) {
+                state.collections.data.push(collec[index]);
+
               }
+              state.collections.link = collec.link
+              state.collections.meta = collec.meta
+            }
           }
           else {
             state.collections.data = null
@@ -182,13 +189,13 @@ let store = createStore({
               if (payload.link == null) {
                 state.products = prod;
               }
-              else{
+              else {
 
                 for (let index = 0; index < prod.length; index++) {
                   state.products.data.push(prod[index]);
-                  
+
                 }
-                
+
                 state.products.link = prod.link
                 state.products.meta = prod.meta
 
@@ -206,14 +213,14 @@ let store = createStore({
       let contain = false;
       for (let index = 0; index < state.panier.products.length; index++) {
         const element = state.panier.products[index];
-        if (element.id ==payload.id) {
+        if (element.id == payload.id) {
 
           contain = true;
-          
+
         }
       }
 
-      contain ? null : state.panier.products.push(payload) ;
+      contain ? null : state.panier.products.push(payload);
       state.panier.push(payload)
       return contain;
     },
@@ -221,11 +228,11 @@ let store = createStore({
       let contain = false;
       for (let index = 0; index < state.panier.products.length; index++) {
         const element = state.panier.products[index];
-        if (element.id ==payload.id) {
+        if (element.id == payload.id) {
 
           state.panier.products.splice(index)
           contain = true;
-          
+
         }
       }
       return contain;
@@ -236,16 +243,16 @@ let store = createStore({
     RESET_PANIER(state) {
       state.panier = new Panier();
     },
-    SET_IDPRODUCT(state,payload) {
+    SET_IDPRODUCT(state, payload) {
       state.idProduct = payload;
     },
-    SET_IDCOLLECTION(state,payload) {
+    SET_IDCOLLECTION(state, payload) {
       state.idCollection = payload;
     },
-    SET_SINGLE_PRODUCT(state,payload) {
+    SET_SINGLE_PRODUCT(state, payload) {
       state.single_product = payload;
     },
-    SET_SINGLE_COLLECTION(state,payload) {
+    SET_SINGLE_COLLECTION(state, payload) {
       state.single_collection = payload;
     },
 

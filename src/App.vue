@@ -1,4 +1,6 @@
 <template  >
+
+     <!--  si l'id de la company est non null et # -404 -->
   <div
     v-show="company.id != null && company.id != -404"
     :style="{ background: 'black', height: '100vh' }"
@@ -15,9 +17,15 @@
     </nav>
     <router-view />
   </div>
+
+     <!--  si l'id de la company est  null  -->
+
   <LoadHome
     v-show="company.id == null"
     :style="{ background: 'black', height: '100vh' }" />
+
+    
+     <!--  si l'id de la company est -404 -->
   <ErrorHome 
     v-show="company?.id == -404"/>
 

@@ -4,6 +4,7 @@ import { createStore } from 'vuex'
 import { Company } from "@/models/company";
 import axios from "axios";
 import { Panier } from '@/models/panier';
+import { SingleCollection } from '@/models/single_collection';
 
 let api = "https://preprod.genuka.com/api/2021-10/"
 
@@ -14,14 +15,14 @@ let store = createStore({
 
 
   state: {
-    racine: api,
-    token: null,
-    timeReset: 20000,
-    company: new Company(),
-    backgroundcolor: 'black',
+    racine: api,//url api
+    token: null,//access token (connexion inscription)
+    timeReset: 20000,//le delais d'attente des requetes
+    company: new Company(),// company
+    backgroundcolor: 'black',//
     collections: new Collections(),
     products: new Products(),
-    single_collection: new Collections(),
+    single_collection: new SingleCollection(),
     single_product: new Product_Single(),
     panier: new Panier(),
     idProduct: null,
@@ -74,9 +75,7 @@ let store = createStore({
 
   mutations: {
     UPDATE_COMPANY(state, payload) {
-      state.company = payload;/* 
-      console.log("payload" + payload.id ?? "null")
-      console.log("state.company" + state.company) */
+      state.company = payload;
     },
     async GET_COMPANY(state) {
 
@@ -87,7 +86,7 @@ let store = createStore({
         let prod = new Products();
         let collec = new Collections();
         let domaine =
-          document.location.protocol + "//" + document.location.hostname;
+          document.location.protocol + "//" + document.location.hostname;//nom de domaine
 
 
 
@@ -128,6 +127,7 @@ let store = createStore({
                   }
                   else {
                     state.collections.data = null
+                    state.products.data = null;
                     state.company = company;
                   }
                 })
@@ -146,7 +146,6 @@ let store = createStore({
     },
     async GET_COLLECTIONS(state, payload) {
       let complement = payload.data == null ? "" : "?per_page=" + payload.data.nbr + "?per_page=" + payload.data.page + "&sort_by=" + payload.data.sort_by + "&sort_dir=" + payload.sort_dir;
-
       let url = payload.link ?? api + "companies/" + state.company.id + "/collections" + complement;
       let collec = new Collections();
       //console.log(url);
@@ -236,6 +235,16 @@ let store = createStore({
         }
       }
       return contain;
+    },
+    UPDATE_PRODUCT_PANIER(state, payload) {
+      for (let index = 0; index < state.panier.products.length; index++) {
+        const element = state.panier.products[index];
+        if (element.id == payload.id) {
+
+          state.panier.products[index] = payload;
+
+        }
+      }
     },
     RESET_PRODUCT_PANIER(state) {
       state.panier.products = [];

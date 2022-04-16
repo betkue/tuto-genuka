@@ -1,6 +1,5 @@
 <template>
     <div>
-      jhgbdcshbvfjksbkjsdfb
          products : {{ products.data[0].name  }} 
     </div>
 </template>

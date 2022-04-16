@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    GROUPE 2
     <img v-if='company?.logo == null' alt="Vue logo" src="../assets/logo.png">
     <img v-if='company?.logo != null' alt="Vue logo" :src="company?.logo">
     <Home  />

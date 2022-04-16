@@ -1,6 +1,6 @@
-import { Data } from "./products";
+import { Product_Single } from "./products";
 
-export class SingleCOllection{
+export class SingleCollection{
     collection
     products
     constructor(collection , products){
@@ -29,7 +29,7 @@ class Products {
 
             for (let index = 0; index < json['data'].length; index++) {
                 const element = json['data'][index];
-                let d = new Data();
+                let d = new Product_Single();
 
                 d.fromJson(element);
 

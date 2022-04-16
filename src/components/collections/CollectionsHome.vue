@@ -31,7 +31,6 @@ export default {
     updated(){
 
 
-      console.log(this.$store.state.collections.data[0])
 
         
 

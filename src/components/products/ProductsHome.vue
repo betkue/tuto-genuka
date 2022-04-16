@@ -1,22 +1,10 @@
 <template>
     <LoadProductsHome v-if="products.data == null" />
     <section v-else-if="products.data.length == 0">vide</section>
-    <section v-else>
-
-
-
-
-
-            
+    <section v-else>       
     <div>
       <span>{{ products.data[0].name  }}</span>
     </div>
-
-
-
-
-
-
     </section>
 </template>
 

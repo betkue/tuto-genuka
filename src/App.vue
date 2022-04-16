@@ -1,18 +1,27 @@
 <template  >
-  <div v-show="company.id != null" :style="{background:'black',height: '100vh' }">
+  <div
+    v-show="company.id != null && company.id != -404"
+    :style="{ background: 'black', height: '100vh' }"
+  >
     <nav>
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link v-if="token == null" to="/products">Produits</router-link> |
       <router-link v-if="token == null" to="/collections"
-         >Collections</router-link
+        >Collections</router-link
       >
       | <router-link v-if="token == null" to="/connect">connect</router-link> |
       <router-link v-if="token == null" to="/deconnect">deconnect</router-link>
     </nav>
-    <router-view  />
+    <router-view />
   </div>
-  <LoadHome v-show="company.id == null" :style="{background:'black',height: '100vh' }"/>
+  <LoadHome
+    v-show="company.id == null"
+    :style="{ background: 'black', height: '100vh' }" />
+  <ErrorHome 
+    v-show="company?.id == -404"/>
+
+
 </template>
 
 
@@ -40,50 +49,39 @@ nav a.router-link-exact-active {
 </style>
 <script>
 import { mapGetters } from "vuex";
-import { Company } from "@/models/company";
-import axios from "axios";
-import LoadHome from '@/components/loaders/LoadHome.vue'
+import LoadHome from "@/components/loaders/LoadHome.vue";
+import { Company } from "./models/company";
+import ErrorHome from "@/components/ErrorHome.vue";
+
 export default {
   name: "App",
   components: {
-    LoadHome
+    LoadHome,
+    ErrorHome,
   },
-
-  methods:{
-    aff()
-    {
-       console.log(this.$store.state.company);
-    },
-    getcompany(){
-      
-      let company = new Company();
-      let domaine =
-        document.location.protocol + "//" + document.location.hostname;
-
-      axios
-        .get(this.$store.state.racine + "companies/byurl?url=" + domaine)
-        .then((response) => {
-          if (response.status == 200) {
-            let json = response.data;
-            company.fromJson(json);
-
-            this.$store.commit("UPDATE_COMPANY", company);
-
-            return company;
-          }
+  methods: {
+    async getcompany() {
+      var getcom = function (store) {
+        return new Promise((resolve) => {
+          setTimeout(function () {
+            resolve("lente");
+            store.commit("UPDATE_COMPANY", new Company(-404));
+          }, store.state.timeReset);
         });
-    }
+      };
+      this.$store.commit("GET_COMPANY");
+      const lente = await getcom(this.$store);
+
+      console.log(lente);
+    },
   },
   computed: {
     ...mapGetters(["company"]),
     ...mapGetters(["racine"]),
     ...mapGetters(["token"]),
   },
-   beforeMount() {
-    if (this.$store.state.company.id == null) {
-      
-         this.getcompany()
-    }
+  async beforeMount() {
+    this.getcompany();
   },
 };
 </script>

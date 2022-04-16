@@ -10,7 +10,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import( '../views/AboutView.vue')
+    component: () => import('../views/AboutView.vue')
   },
   {
     path: '/connect',
@@ -25,12 +25,12 @@ const routes = [
   {
     path: '/products',
     name: 'products',
-    component: () => import('../views/CollectionsView.vue')
+    component: () => import('../views/ProductsView.vue')
   },
   {
     path: '/collections',
     name: 'collection',
-    component: () => import('../views/DeconnectView.vue')
+    component: () => import('../views/CollectionsView.vue')
   }
 ]
 

@@ -18,7 +18,7 @@ export class Products{
         this.meta = json['meta'] != null ? this.meta.fromJson(json['meta']) : new Meta();
         if (json['data'] != null) {
             for (let index = 0; index < json['data'].length; index++) {
-                let d = new Data();
+                let d = new Product_Single();
 
                 d.fromJson(json['data'][index]);
 
@@ -29,7 +29,7 @@ export class Products{
     }
 }
 
-export class Data{
+export class Product_Single{
 
     id
     name

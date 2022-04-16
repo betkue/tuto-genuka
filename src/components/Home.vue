@@ -1,8 +1,7 @@
 <template>
   <div class="hello">
-    <h1>{{ company.name }}</h1>
-    <h1>{{ msg }}</h1>
-    <h2> {{ company.description }} </h2>
+    <h1>{{ company?.name }}</h1>
+    <h2> {{ company?.description }} </h2>
     <div class="display">
       
     <h3> Collecions </h3>
@@ -29,6 +28,9 @@ export default {
   components:{
     CollectionsHome,
     ProductsHome
+  },
+  updated(){
+    
   },
    computed: {
         ...mapGetters(['company']),

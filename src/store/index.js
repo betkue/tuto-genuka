@@ -5,6 +5,7 @@ import { Company } from "@/models/company";
 import axios from "axios";
 import { Panier } from '@/models/panier';
 import { SingleCollection } from '@/models/single_collection';
+import { UserAuth } from '@/models/user_auth';
 
 let api = "https://preprod.genuka.com/api/2021-10/"
 
@@ -25,6 +26,7 @@ let store = createStore({
     single_collection: new SingleCollection(),
     single_product: new Product_Single(),
     panier: new Panier(),
+    user: new UserAuth(),
     idProduct: null,
     idCollection: null,
     login: "company"
@@ -76,6 +78,9 @@ let store = createStore({
   mutations: {
     UPDATE_COMPANY(state, payload) {
       state.company = payload;
+    },
+    UPDATE_TOKEN(state, payload) {
+      state.token = payload;
     },
     async GET_COMPANY(state) {
 
@@ -264,6 +269,72 @@ let store = createStore({
     SET_SINGLE_COLLECTION(state, payload) {
       state.single_collection = payload;
     },
+    async CONNEXION(state, payload) {
+      state.token = null;
+      console.log("Tag " + payload.tag)
+      console.log("Pass " + payload.password)
+      let user = new UserAuth();
+      let url = api + "clients/login";
+      axios.post(url,
+        {
+          "email": payload.tag,
+          "password": payload.password,//password
+          "company_id": 430,//state.company.id,
+          "fromApi": true
+        }
+
+      ).then(
+        (response) => {
+          console.log(response);
+          if (response.status == 200) {
+            
+            user.fromJson(response.data);
+            state.user = user;
+
+
+          } else {
+            user.user.id = -404
+
+
+          }
+        }
+      );
+    },
+    async INSCRIPTION(state, payload) {
+      state.token = null;
+      let user = new UserAuth();
+      let url = api + "clients/register";
+      axios.post(url,
+        {
+          "email": payload.email,
+          "tel": payload.tel,
+          "firstname": payload.firstname,
+          "lastname": payload.lastname,
+          "password": payload.password,
+          "company_id": state.company.id,
+          "fromApi": true
+        }
+
+      ).then(
+        (response) => {
+          console.log(response);
+          
+          if (response.status == 200) {
+            
+            user.fromJson(response.data);
+            state.user = user;
+
+
+          } else {
+            user.user.id = -404
+
+
+          }
+
+        }
+      );
+
+    }
 
 
   },

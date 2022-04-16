@@ -1,6 +1,6 @@
 <template>
     <div>
-        collections : {{ collections.data[0].name }} 
+        collections : {{ collections?.data[0]?.name }} 
     </div>
 </template>
 

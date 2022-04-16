@@ -29,8 +29,18 @@ const routes = [
   },
   {
     path: '/collections',
-    name: 'collection',
+    name: 'collections',
     component: () => import('../views/CollectionsView.vue')
+  },
+  {
+    path: '/products/:product_slug',
+    name: 'product',
+    component: () => import('../views/ProductView.vue')
+  },
+  {
+    path: '/collections/:collection_slug',
+    name: 'collection',
+    component: () => import('../views/CollectionView.vue')
   }
 ]
 

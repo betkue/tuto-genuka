@@ -13,7 +13,7 @@
         >Collections</router-link
       >
       | <router-link v-if="token == null" to="/connect">connect</router-link> |
-      <router-link v-if="token == null" to="/deconnect">deconnect</router-link>
+      <router-link v-if="token != null" to="/deconnect">deconnect</router-link>
     </nav>
     <router-view />
   </div>
@@ -67,12 +67,19 @@ export default {
     LoadHome,
     ErrorHome,
   },
+  watch:{
+       title: {
+      immediate: true,
+      handler () {
+        document.title = this.$store.state.company.name??"..."
+      }
+  }},
   methods: {
     async getcompany() {
       var getcom = function (store) {
         return new Promise((resolve) => {
           setTimeout(function () {
-            resolve("lente");
+            resolve("");
             if (store.state.company.id == null) {
               
             store.commit("UPDATE_COMPANY", new Company(-404));
@@ -92,6 +99,8 @@ export default {
     ...mapGetters(["token"]),
   },
   async beforeMount() {
+    
+ 
     this.getcompany();
   },
 };

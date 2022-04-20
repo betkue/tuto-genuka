@@ -3,6 +3,7 @@ import { Products, Product_Single } from '@/models/products'
 import { createStore } from 'vuex'
 import { Company } from "@/models/company";
 import axios from "axios";
+import createPersistedState from "vuex-persistedstate";
 import { Panier } from '@/models/panier';
 import { SingleCollection } from '@/models/single_collection';
 import { UserAuth } from '@/models/user_auth';
@@ -14,7 +15,7 @@ let api = "https://preprod.genuka.com/api/2021-10/"
 
 let store = createStore({
 
-
+  plugins: [createPersistedState()],
   state: {
     racine: api,//url api
     token: null,//access token (connexion inscription)
@@ -83,71 +84,74 @@ let store = createStore({
       state.token = payload;
     },
     async GET_COMPANY(state) {
-
-
-      if (state.company.id == null) {
-        state.login = "company";
-        let company = new Company();
-        let prod = new Products();
-        let collec = new Collections();
-        let domaine =
-          document.location.protocol + "//" + document.location.hostname;//nom de domaine
-
-
-
-        axios
-          .get(api + "companies/byurl?url=" + domaine)
-          .then((response) => {
-            if (response.status == 200) {
-              state.login = "collection";
-              let json = response.data;
-              company.fromJson(json);
-
-              let url1 = api + "companies/" + company.id + "/collections";
-              axios.get(url1).then(
-
-                (response) => {
-
-                  if (response.status == 200) {
-                    state.login = "products";
-
-                    collec.fromJson(response.data);
-                    let url2 = api + "companies/" + company.id + "/products";
-                    axios.get(url2).then(
-                      (response) => {
-                        if (response.status == 200) {
-                          prod.fromJson(response.data)
-                          state.products = prod;
-                          state.collections = collec;
-                          state.company = company;
-
+      if (state.company.id == null || state.company.id == -404) {
+        if (state.company.id == null) {
+          state.login = "company";
+          let company = new Company();
+          let prod = new Products();
+          let collec = new Collections();
+          let domaine =
+            document.location.protocol + "//" + document.location.hostname;//nom de domaine
+  
+  
+  
+          axios
+            .get(api + "companies/byurl?url=" + domaine)
+            .then((response) => {
+              if (response.status == 200) {
+                state.login = "collection";
+                let json = response.data;
+                company.fromJson(json);
+  
+                let url1 = api + "companies/" + company.id + "/collections";
+                axios.get(url1).then(
+  
+                  (response) => {
+  
+                    if (response.status == 200) {
+                      state.login = "products";
+  
+                      collec.fromJson(response.data);
+                      let url2 = api + "companies/" + company.id + "/products";
+                      axios.get(url2).then(
+                        (response) => {
+                          if (response.status == 200) {
+                            prod.fromJson(response.data)
+                            state.products = prod;
+                            state.collections = collec;
+                            state.company = company;
+  
+                          }
+                          else {
+                            state.products.data = null;
+                            state.collections = collec;
+                            state.company = company;
+                          }
                         }
-                        else {
-                          state.products.data = null;
-                          state.collections = collec;
-                          state.company = company;
-                        }
-                      }
-                    );
-                  }
-                  else {
-                    state.collections.data = null
-                    state.products.data = null;
-                    state.company = company;
-                  }
-                })
-
-
-            }
-            else {
-              state.company.id = -404
-              console.log(state.company)
-            }
-          })
-
-          ;
-
+                      );
+                    }
+                    else {
+                      state.collections.data = null
+                      state.products.data = null;
+                      state.company = company;
+                    }
+                  })
+  
+  
+              }
+              else {
+                state.company.id = -404
+                console.log(state.company)
+              }
+            })
+  
+            ;
+  
+        }
+        
       }
+
+     /*  */
     },
     async GET_COLLECTIONS(state, payload) {
       let complement = payload.data == null ? "" : "?per_page=" + payload.data.nbr + "?per_page=" + payload.data.page + "&sort_by=" + payload.data.sort_by + "&sort_dir=" + payload.sort_dir;
@@ -333,6 +337,11 @@ let store = createStore({
 
         }
       );
+
+    },
+    DECONNEXION(state){
+      state.token = null,
+      state.user = new UserAuth()
 
     }
 

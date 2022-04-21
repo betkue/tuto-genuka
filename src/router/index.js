@@ -41,6 +41,11 @@ const routes = [
     path: '/collections/:collection_slug',
     name: 'collection',
     component: () => import('../views/CollectionView.vue')
+  },
+  {
+    path: '/panier',
+    name: 'panier',
+    component: () => import('../views/PanierView.vue')
   }
 ]
 

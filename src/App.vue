@@ -13,7 +13,8 @@
         >Collections</router-link
       >
       | <router-link v-if="token == null" to="/connect">connect</router-link> |
-      <router-link v-if="token != null" to="/deconnect">deconnect</router-link>
+      <router-link v-if="token != null" to="/deconnect">deconnect</router-link> |
+      <router-link  to="/panier">panier [ {{  panier.products.length  }} ]</router-link>
     </nav>
     <router-view />
   </div>
@@ -97,6 +98,7 @@ export default {
     ...mapGetters(["company"]),
     ...mapGetters(["racine"]),
     ...mapGetters(["token"]),
+    ...mapGetters(["panier"]),
   },
   async beforeMount() {
     
